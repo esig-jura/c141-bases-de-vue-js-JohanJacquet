@@ -11,20 +11,21 @@
       >
         <v-card-title>Liste de Pokémons</v-card-title>
 
-        <v-card-subtitle class="text-center">
+        <v-card-subtitle class="text-center" v-show="estVide">
           La liste est vide.
         </v-card-subtitle>
 
         <v-list>
-          <v-list-item>
-            <v-list-item-title>
-              *** POKEMON ***
+          <v-list-item v-for="(pokemon, index) in pokemons" :key="index">
+            <v-list-item-title >
+              {{  pokemon }}
             </v-list-item-title>
 
             <template v-slot:append>
               <v-btn
                 icon="mdi-delete"
                 variant="text"
+                @click="removePokemon(index)"
               ></v-btn>
             </template>
           </v-list-item>
@@ -40,6 +41,8 @@ import Exercice3Donnee from "@/components/donnees/Exercice3Donnee.vue";
 // Importation de la fonction réactive ref
 import {ref} from 'vue';
 
+const estVide = ref(false)
+
 // Tableau réactif de noms de Pokémons
 const pokemons = ref([
   "Pikachu",
@@ -54,7 +57,10 @@ const pokemons = ref([
  * @param {number} index - Index, position, du Pokémon à supprimer.
  */
 function removePokemon(index) {
-  pokemons.value.splice(index, 1);
+  pokemons.value.splice(index, 1)
+  if (pokemons.value.length === 0) {
+    estVide.value = true;
+  }
 }
 </script>
 
