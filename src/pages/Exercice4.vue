@@ -10,15 +10,16 @@
 
         <v-card-subtitle>
           Caractères restants :
-          <strong>*** CARACTÈRES RESTANTS ***</strong>
+          <strong>{{ caraLeft }}</strong>
         </v-card-subtitle>
 
         <v-card-text>
-          <v-alert type="error" class="mb-2">
+          <v-alert type="error" class="mb-2" v-show="erreur">
             Vous avez atteint la limite maximale de caractères !
           </v-alert>
 
-          <v-text-field
+          <v-text-field v-model="userInput"
+            @update:modelValue="countCaracter"
             outlined
             rows="2"
             label="Tapez votre texte ici"
@@ -46,5 +47,17 @@ import { ref } from 'vue';
 const MAX_LENGTH = 20;
 // Variable réactive pour le texte saisi
 const userInput = ref('');
+const erreur = ref(false);
+const caraLeft = ref('20')
+
+function countCaracter() {
+  if (userInput.value.length > MAX_LENGTH) {
+    erreur.value = true
+    caraLeft.value = "Aucun ! espèce de malade !"
+  } else {
+    erreur.value = false
+    caraLeft.value = MAX_LENGTH - userInput.value.length
+  }
+}
 
 </script>
